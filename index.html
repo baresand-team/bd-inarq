@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BD-INARQ - Sistema de Gestión</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Pantalla de login/registro -->
+    <div id="auth-screen" class="screen hidden">
+        <div class="auth-container">
+            <h1>BD-INARQ</h1>
+            <p>Sistema de Gestión de Obra y Oficina</p>
+            
+            <div class="auth-tabs">
+                <button id="login-tab" class="tab-button active">Iniciar Sesión</button>
+                <button id="register-tab" class="tab-button">Registrarse</button>
+            </div>
+
+            <!-- Formulario de Login -->
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña:</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+            </form>
+
+            <!-- Formulario de Registro -->
+            <form id="register-form" class="auth-form hidden">
+                <div class="form-group">
+                    <label for="register-name">Nombre:</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email:</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Contraseña:</label>
+                    <input type="password" id="register-password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirmar Contraseña:</label>
+                    <input type="password" id="register-confirm-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrarse</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Vista de Obra -->
+    <div id="obra-screen" class="screen hidden">
+        <header class="header">
+            <h1>Vista de Obra</h1>
+            <button id="logout-btn" class="btn btn-secondary">Cerrar Sesión</button>
+        </header>
+        
+        <main class="main-content">
+            <div class="form-container">
+                <h2>Nuevo Pedido/Asistencia</h2>
+                <form id="request-form">
+                    <div class="form-group">
+                        <label for="project-id">ID del Proyecto:</label>
+                        <input type="text" id="project-id" required placeholder="Ej: PROY-001">
+                    </div>
+                    <div class="form-group">
+                        <label for="obra-name">Nombre de la Obra:</label>
+                        <input type="text" id="obra-name" required placeholder="Ej: Edificio Central">
+                    </div>
+                    <div class="form-group">
+                        <label for="request-type">Tipo:</label>
+                        <select id="request-type" required>
+                            <option value="pedido">Pedido</option>
+                            <option value="asistencia">Asistencia</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="request-title">Título:</label>
+                        <input type="text" id="request-title" required placeholder="Título del pedido/asistencia">
+                    </div>
+                    <div class="form-group">
+                        <label for="request-description">Descripción:</label>
+                        <textarea id="request-description" rows="4" placeholder="Describe el pedido o asistencia necesaria"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="image-upload">Imagen (opcional):</label>
+                        <input type="file" id="image-upload" accept="image/*">
+                        <div id="image-preview" class="image-preview hidden"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar Pedido</button>
+                </form>
+            </div>
+
+            <div class="requests-container">
+                <h2>Mis Pedidos</h2>
+                <div id="requests-list" class="requests-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Vista de Oficina -->
+    <div id="oficina-screen" class="screen hidden">
+        <header class="header">
+            <h1>Vista de Oficina</h1>
+            <button id="logout-btn-office" class="btn btn-secondary">Cerrar Sesión</button>
+        </header>
+        
+        <main class="main-content">
+            <div class="filters-container">
+                <h2>Filtros</h2>
+                <div class="filters">
+                    <div class="form-group">
+                        <label for="filter-project">Proyecto:</label>
+                        <select id="filter-project">
+                            <option value="">Todos los proyectos</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-status">Estado:</label>
+                        <select id="filter-status">
+                            <option value="">Todos los estados</option>
+                            <option value="pending">Pendiente</option>
+                            <option value="downloaded">Descargado</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="filter-type">Tipo:</label>
+                        <select id="filter-type">
+                            <option value="">Todos los tipos</option>
+                            <option value="pedido">Pedido</option>
+                            <option value="asistencia">Asistencia</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="requests-container">
+                <h2>Pedidos</h2>
+                <div id="office-requests-list" class="requests-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast para mensajes -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Modal para vista previa de imagen -->
+    <div id="image-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modal-image" src="" alt="Vista previa">
+        </div>
+    </div>
+
+    <!-- Scripts Firebase -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

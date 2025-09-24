@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Firebase</title>
+</head>
+<body>
+    <h1>Test Firebase</h1>
+    <div id="status">Cargando...</div>
+    
+    <script type="module">
+        import { firebaseConfig } from './js/firebase-config.js';
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        
+        try {
+            console.log('Configuración Firebase:', firebaseConfig);
+            
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
+            const db = getFirestore(app);
+            
+            document.getElementById('status').innerHTML = '✅ Firebase configurado correctamente!';
+            console.log('✅ Firebase inicializado correctamente');
+        } catch (error) {
+            document.getElementById('status').innerHTML = '❌ Error: ' + error.message;
+            console.error('❌ Error:', error);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // users collection: cada usuario puede leer/escribir su propio perfil
+    match /users/{userId} {
+      allow create: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow update: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // requests collection
+    match /requests/{requestId} {
+      allow create: if request.auth != null
+                    && request.resource.data.createdByUid == request.auth.uid;
+      allow read: if request.auth != null && (
+                    resource.data.createdByUid == request.auth.uid ||
+                    firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == "office"
+                  );
+      allow update: if request.auth != null && (
+                      request.auth.uid == resource.data.createdByUid ||
+                      firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == "office"
+                    );
+      allow delete: if request.auth != null
+                    && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.role == "office";
+    }
+  }
+}

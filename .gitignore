@@ -1,0 +1,23 @@
+# Archivos de configuración sensibles
+js/firebase-config.js
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencias (si se agregan en el futuro)
+node_modules/
+
+# Archivos temporales
+*.tmp
+*.temp
